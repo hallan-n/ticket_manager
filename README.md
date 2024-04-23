@@ -20,3 +20,15 @@ Este projeto é um sistema simples de gerenciamento de chamados projetado para p
 - Banco de Dados:
   - MySQL
   - aiomysql - Conector assíncrono
+
+### Instalação
+1. Clone o repositório:
+
+    ```bash
+    git clone https://github.com/hallan-n/ticket_manager.git
+    ```
+2. Suba os containers Docker:
+
+    ```bash
+    docker-compose up -d
+    ```
