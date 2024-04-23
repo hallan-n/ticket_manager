@@ -1,30 +1,29 @@
 import asyncio
+import os
 
 import aiomysql
 
 
 class Connection:
-    def __init__():
-        loop = asyncio.get_event_loop()
-
-        config = {
-            "host": "127.0.0.1",
-            "port": 3306,
-            "user": "root",
-            "password": "",
-            "db": "mysql",
-            "loop": loop,
+    def __init__(self):
+        self.loop = asyncio.get_event_loop()
+        self.config = {
+            "host": os.getenv("HOST"),
+            "port": os.getenv("PORT"),
+            "user": os.getenv("USER"),
+            "password": os.getenv("PASSWORD"),
+            "db": os.getenv("DB"),
+            "loop": self.loop,
         }
 
-        async def test_example():
-            conn = await aiomysql.connect(**config)
+    async def connect(self):
+        self.conn = await aiomysql.connect(**self.config)
 
-            cur = await conn.cursor()
-            await cur.execute("SELECT Host,User FROM user")
-            print(cur.description)
-            r = await cur.fetchall()
-            print(r)
-            await cur.close()
-            conn.close()
+    async def __aenter__(self):
+        await self.connect()
+        self.cursor = await self.conn.cursor()
+        return self.cursor
 
-        loop.run_until_complete(test_example())
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self.cursor.close()
+        self.conn.close()
