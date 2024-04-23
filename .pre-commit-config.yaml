@@ -4,7 +4,7 @@ repos:
     hooks:
     - id: black
       language_version: python3.11
-      entry: bash -c 'black . && git add .'
+      entry: bash -c 'black app && git add .'
       stages: [commit]
 -   repo: local
     hooks:
@@ -20,5 +20,13 @@ repos:
     - id: isort
       name: isort
       language: system
-      entry: bash -c 'isort . && git add .'
+      entry: bash -c 'isort app && git add .'
       stages: [commit]
+-   repo: local
+    hooks:
+      - id: requirements
+        name: requirements
+        entry: bash -c 'venv/Scripts/activate && pip freeze > requirements.txt && git add requirements.txt'
+        language: system
+        pass_filenames: false
+        stages: [commit]
