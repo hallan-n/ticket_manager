@@ -11,6 +11,12 @@ fastapi = "^0.110.2"
 uvicorn = "^0.29.0"
 
 
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.4.0"
+pre-commit = "^3.7.0"
+pytest = "^8.1.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
