@@ -25,7 +25,7 @@ class ChatRepository:
             chat_raw = await conn.fetchall()
             return ModelAdapter(chat_raw, Chat).to_model()
 
-    async def insert_chat(self):
+    async def insert_chat(self, chat: Chat = None):
         query = f"""
                 INSERT INTO chat(update_at) VALUES(now());
             """

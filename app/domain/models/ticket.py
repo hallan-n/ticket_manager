@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Ticket(BaseModel):
-    id: int
+    id: int = None
     title: str
     open_date: datetime = datetime.now()
     resolution_date: datetime = None

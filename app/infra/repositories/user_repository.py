@@ -41,23 +41,12 @@ class UserRepository:
             except:
                 return False
 
-    async def delete_user(self, id: int):
-        query = f"""
-                DELETE FROM user WHERE id = {id};
-            """
-        async with self.connection as conn:
-            try:
-                await conn.execute(query)
-                return True
-            except:
-                return False
-
     async def update_user(self, user: User):
         query = f"""
                 UPDATE user SET
-                    name = {user.name},
-                    login = {user.login},
-                    password = {user.password},
+                    name = '{user.name}',
+                    login = '{user.login}',
+                    password = '{user.password}'
                     WHERE id = {user.id};
             """
         async with self.connection as conn:

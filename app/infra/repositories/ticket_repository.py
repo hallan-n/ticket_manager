@@ -23,9 +23,12 @@ class TicketRepository:
                 WHERE id = {id};
             """
         async with self.connection as conn:
-            await conn.execute(query)
-            ticket_raw = await conn.fetchall()
-            return ModelAdapter(ticket_raw, Ticket).to_model()
+            try:
+                await conn.execute(query)
+                ticket_raw = await conn.fetchall()
+                return ModelAdapter(ticket_raw, Ticket).to_model()
+            except:
+                return None
 
     async def insert_ticket(self, ticket: Ticket):
         query = f"""
@@ -59,10 +62,10 @@ class TicketRepository:
     async def update_ticket(self, ticket: Ticket):
         query = f"""
                 UPDATE ticket SET
-                    title = {ticket.title},
-                    open_date = {ticket.open_date},
-                    resolution_date = {ticket.resolution_date},
-                    status = {ticket.status},
+                    title = '{ticket.title}',
+                    open_date = '{ticket.open_date}',
+                    resolution_date = '{ticket.resolution_date}',
+                    status = '{ticket.status}',
                     sla = {ticket.sla}
                     WHERE id = {ticket.id};
             """

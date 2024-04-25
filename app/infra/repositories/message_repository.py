@@ -23,9 +23,12 @@ class MessageRepository:
                 WHERE id = {id};
             """
         async with self.connection as conn:
-            await conn.execute(query)
-            message_raw = await conn.fetchall()
-            return ModelAdapter(message_raw, Message).to_model()
+            try:
+                await conn.execute(query)
+                message_raw = await conn.fetchall()
+                return ModelAdapter(message_raw, Message).to_model()
+            except:
+                return None
 
     async def insert_message(self, message: Message):
         query = f"""
