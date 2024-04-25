@@ -27,13 +27,14 @@ class MessageRepository:
             message_raw = await conn.fetchall()
             return ModelAdapter(message_raw, Message).to_model()
 
-    async def insert_messaget(self, message: Message):
+    async def insert_message(self, message: Message):
         query = f"""
                 INSERT INTO message
                 (msg,sent_at,chat_id,sender_id,recipient_id)
                 VALUES(
-                    {message.msg},{message.sent_at},{message.chat_id},
-                    {message.sender_id},{message.recipient_id});
+                    '{message.msg}','{message.sent_at}',
+                    {message.chat_id},{message.sender_id},
+                    {message.recipient_id});
             """
         async with self.connection as conn:
             try:
@@ -56,8 +57,8 @@ class MessageRepository:
     async def update_message(self, message: Message):
         query = f"""
                 UPDATE message SET
-                    msg = {message.msg},
-                    sent_at = {message.sent_at},
+                    msg = '{message.msg}',
+                    sent_at = '{message.sent_at}',
                     chat_id = {message.chat_id},
                     sender_id = {message.sender_id},
                     recipient_id = {message.recipient_id}

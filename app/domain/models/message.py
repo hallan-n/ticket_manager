@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Message(BaseModel):
-    id: int
+    id: int = None
     msg: str
     sent_at: datetime
     chat_id: int
