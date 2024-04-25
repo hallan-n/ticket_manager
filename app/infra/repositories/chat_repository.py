@@ -1,4 +1,5 @@
-from adapter.chat_adapter import ChatAdapter
+from adapter.adapter import ModelAdapter
+from domain.models.chat import Chat
 from infra.connection import Connection
 
 
@@ -11,7 +12,7 @@ class ChatRepository:
         async with self.connection as conn:
             await conn.execute(query)
             chats_raw = await conn.fetchall()
-            chats = [ChatAdapter(chat).to_model() for chat in chats_raw]
+            chats = [ModelAdapter(chat, Chat).to_model() for chat in chats_raw]
             return chats
 
     async def select_chat_for_id(self, id: int):
@@ -21,8 +22,8 @@ class ChatRepository:
             """
         async with self.connection as conn:
             await conn.execute(query)
-            chat = await conn.fetchall()
-            return ChatAdapter(chat).to_model()
+            chat_raw = await conn.fetchall()
+            return ModelAdapter(chat_raw, Chat).to_model()
 
     async def insert_chat(self):
         query = f"""
