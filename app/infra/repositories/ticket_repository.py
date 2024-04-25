@@ -1,6 +1,6 @@
 from adapter.adapter import ModelAdapter
 from domain.models.ticket import Ticket
-from infra.connection import Connection
+from infra.config.connection import Connection
 
 
 class TicketRepository:

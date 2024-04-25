@@ -1,6 +1,6 @@
 from adapter.adapter import ModelAdapter
 from domain.models.user import User
-from infra.connection import Connection
+from infra.config.connection import Connection
 
 
 class UserRepository:

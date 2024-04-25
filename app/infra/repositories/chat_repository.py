@@ -1,6 +1,6 @@
 from adapter.adapter import ModelAdapter
 from domain.models.chat import Chat
-from infra.connection import Connection
+from infra.config.connection import Connection
 
 
 class ChatRepository:

@@ -1,6 +1,6 @@
 from adapter.adapter import ModelAdapter
 from domain.models.message import Message
-from infra.connection import Connection
+from infra.config.connection import Connection
 
 
 class MessageRepository:
