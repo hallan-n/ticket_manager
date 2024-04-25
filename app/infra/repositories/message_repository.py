@@ -32,8 +32,10 @@ class MessageRepository:
                 INSERT INTO message
                 (msg,sent_at,chat_id,sender_id,recipient_id)
                 VALUES(
-                    '{message.msg}','{message.sent_at}',
-                    {message.chat_id},{message.sender_id},
+                    '{message.msg}',
+                    '{message.sent_at}',
+                    {message.chat_id},
+                    {message.sender_id},
                     {message.recipient_id});
             """
         async with self.connection as conn:
