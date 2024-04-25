@@ -30,11 +30,19 @@ class ChatRepository:
                 INSERT INTO chat(update_at) VALUES(now());
             """
         async with self.connection as conn:
-            await conn.execute(query)
+            try:
+                await conn.execute(query)
+                return True
+            except:
+                return False
 
     async def delete_chat(self, id: int):
         query = f"""
                 DELETE FROM chat WHERE id = {id};
             """
         async with self.connection as conn:
-            await conn.execute(query)
+            try:
+                await conn.execute(query)
+                return True
+            except:
+                return False
