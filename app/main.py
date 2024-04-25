@@ -1,11 +1,9 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from infra.routes.ticket_router import route as ticket
 
 load_dotenv()
 
 app = FastAPI()
 
-
-@app.get("/")
-async def teste():
-    return {"msg": True}
+app.include_router(ticket)
