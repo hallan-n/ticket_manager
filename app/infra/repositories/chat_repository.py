@@ -25,16 +25,13 @@ class ChatRepository:
             chat_raw = await conn.fetchall()
             return ModelAdapter(chat_raw, Chat).to_model()
 
-    async def insert_chat(self, chat: Chat = None):
-        query = f"""
-                INSERT INTO chat(update_at) VALUES(now());
-            """
+    async def insert_chat(self):
+        import datetime
+
+        from infra.config.schemas import chat
+
         async with self.connection as conn:
-            try:
-                await conn.execute(query)
-                return True
-            except:
-                return False
+            await conn.execute(chat.insert().values(update_at=datetime.datetime.now()))
 
     async def delete_chat(self, id: int):
         query = f"""
