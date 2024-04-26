@@ -14,6 +14,7 @@ user = Table(
     Column("password", String(255), nullable=False),
     Column("create_at", DateTime, default=datetime.now),
     Column("update_at", DateTime, default=datetime.now, onupdate=datetime.now),
+    extend_existing=True,
 )
 ticket = Table(
     "ticket",
@@ -24,6 +25,7 @@ ticket = Table(
     Column("resolution_date", DateTime, nullable=False),
     Column("status", String(255)),
     Column("sla", Boolean, default=False),
+    extend_existing=True,
 )
 
 chat = Table(
@@ -31,9 +33,10 @@ chat = Table(
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("update_at", DateTime, default=datetime.now, onupdate=datetime.now),
+    extend_existing=True,
 )
 message = Table(
-    "user",
+    "message",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("msg", Text, nullable=False),
@@ -41,4 +44,5 @@ message = Table(
     Column("chat_id", Integer, ForeignKey("chat.id"), nullable=False),
     Column("sender_id", Integer, ForeignKey("user.id"), nullable=False),
     Column("recipient_id", Integer, ForeignKey("user.id"), nullable=False),
+    extend_existing=True,
 )
