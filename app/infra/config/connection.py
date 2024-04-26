@@ -1,11 +1,13 @@
+from os import getenv as env
+
 from infra.config.schemas import metadata
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 
 class Connection:
-    def __init__(self, url: str) -> None:
-        self.url = url
+    def __init__(self) -> None:
+        self.url = f"{env('DB')}+{env('CONNECTOR')}://{env('USER')}:{env('PASSWORD')}@{env('HOST')}:{env('PORT')}/{env('DB_NAME')}"
         self.engine = create_async_engine(
             self.url, echo=True, pool_size=10, max_overflow=20
         )

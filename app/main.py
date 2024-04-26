@@ -10,7 +10,7 @@
 
 from infra.config.connection import Connection
 
-conn = Connection("mysql+aiomysql://root:123456@localhost/ticket_manager")
+conn = Connection()
 
 
 async def teste():
