@@ -8,7 +8,6 @@ from sqlalchemy.orm import sessionmaker
 class Connection:
     def __init__(self) -> None:
         self.url = f"{env('DB_NAME')}+{env('CONNECTOR')}://{env('USER')}:{env('PASSWORD')}@{env('HOST')}:{env('PORT')}/{env('DB')}"
-        print(self.url)
         self.engine = create_async_engine(
             self.url, echo=True, pool_size=10, max_overflow=20
         )

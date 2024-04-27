@@ -1,74 +1,50 @@
 from adapter.adapter import ModelAdapter
+from adapter.dict_utils import clean_none
 from domain.models.message import Message
 from infra.config.connection import Connection
+from infra.config.schemas import message_table
 
 
 class MessageRepository:
     def __init__(self) -> None:
         self.connection = Connection()
+        self.message_table = message_table
 
-    async def select_all_messages(self):
-        query = f"""SELECT * FROM message;"""
+    async def select_all_messages(self, page: int, page_lenght: int):
+        if page <= 0 or page_lenght <= 0:
+            raise ValueError("Os parâmetro devem ter valores positivos")
+
+        offset = (page - 1) * page_lenght
+        query = self.message_table.select().offset(offset).limit(page_lenght)
+
         async with self.connection as conn:
-            await conn.execute(query)
-            messages_raw = await conn.fetchall()
-            messages = [
-                ModelAdapter(message, Message).to_model() for message in messages_raw
-            ]
-            return messages
+            try:
+                result = await conn.execute(query)
+                messages_raw = result.fetchall()
+                messages = [
+                    ModelAdapter(msg, Message).to_model() for msg in messages_raw
+                ]
+                return messages
+            except Exception as e:
+                raise e
 
     async def select_message_for_id(self, id: int):
-        query = f"""
-            SELECT * FROM message
-                WHERE id = {id};
-            """
+        if id <= 0:
+            raise ValueError("Os parâmetro devem ter valores positivos")
+        query = self.message_table.select().where(self.message_table.c.id == id)
+
         async with self.connection as conn:
             try:
-                await conn.execute(query)
-                message_raw = await conn.fetchall()
-                return ModelAdapter(message_raw, Message).to_model()
+                result = await conn.execute(query)
+                message_raw = result.fetchone()
+                message = ModelAdapter(message_raw, Message).to_model()
+                return message
             except:
-                return None
+                return False
 
     async def insert_message(self, message: Message):
-        query = f"""
-                INSERT INTO message
-                (msg,sent_at,chat_id,sender_id,recipient_id)
-                VALUES(
-                    '{message.msg}',
-                    '{message.sent_at}',
-                    {message.chat_id},
-                    {message.sender_id},
-                    {message.recipient_id});
-            """
-        async with self.connection as conn:
-            try:
-                await conn.execute(query)
-                return True
-            except:
-                return False
-
-    async def delete_message(self, id: int):
-        query = f"""
-                DELETE FROM message WHERE id = {id};
-            """
-        async with self.connection as conn:
-            try:
-                await conn.execute(query)
-                return True
-            except:
-                return False
-
-    async def update_message(self, message: Message):
-        query = f"""
-                UPDATE message SET
-                    msg = '{message.msg}',
-                    sent_at = '{message.sent_at}',
-                    chat_id = {message.chat_id},
-                    sender_id = {message.sender_id},
-                    recipient_id = {message.recipient_id}
-                    WHERE id = {message.id};
-            """
+        data = clean_none(message.model_dump())
+        query = self.message_table.insert().values(**data)
         async with self.connection as conn:
             try:
                 await conn.execute(query)

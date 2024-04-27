@@ -5,4 +5,4 @@ from pydantic import BaseModel
 
 class Chat(BaseModel):
     id: int = None
-    update_at: datetime = datetime.now()
+    update_at: datetime = None
