@@ -1,7 +1,7 @@
-from domain.models.chat import Chat
-from domain.models.message import Message
-from domain.models.ticket import Ticket
-from domain.models.user import User
+from app.domain.models.chat import Chat
+from app.domain.models.message import Message
+from app.domain.models.ticket import Ticket
+from app.domain.models.user import User
 
 
 class ModelAdapter:

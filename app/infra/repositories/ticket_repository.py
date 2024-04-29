@@ -1,8 +1,8 @@
-from adapter.adapter import ModelAdapter
-from adapter.dict_utils import clean_none
-from domain.models.ticket import Ticket
-from infra.config.connection import Connection
-from infra.config.schemas import ticket_table
+from app.adapter.adapter import ModelAdapter
+from app.adapter.dict_utils import clean_none
+from app.domain.models.ticket import Ticket
+from app.infra.config.connection import Connection
+from app.infra.config.schemas import ticket_table
 
 
 class TicketRepository:
@@ -39,7 +39,7 @@ class TicketRepository:
                 ticket = ModelAdapter(ticket_raw, Ticket).to_model()
                 return ticket
             except:
-                return False
+                return {}
 
     async def insert_ticket(self, ticket: Ticket):
         data = clean_none(ticket.model_dump())

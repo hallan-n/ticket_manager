@@ -1,8 +1,9 @@
 from os import getenv as env
 
-from infra.config.schemas import metadata
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
+
+from app.infra.config.schemas import metadata
 
 
 class Connection:

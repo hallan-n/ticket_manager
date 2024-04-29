@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from infra.routes.ticket_router import route as ticket
+
+from app.infra.routes.ticket_router import route as ticket
 
 load_dotenv()
 
