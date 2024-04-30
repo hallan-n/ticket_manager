@@ -1,8 +1,8 @@
-from adapter.adapter import ModelAdapter
-from adapter.dict_utils import clean_none
-from domain.models.message import Message
-from infra.config.connection import Connection
-from infra.config.schemas import message_table
+from app.adapter.adapter import ModelAdapter
+from app.adapter.dict_utils import clean_none
+from app.domain.models.message import Message
+from app.infra.config.connection import Connection
+from app.infra.config.schemas import message_table
 
 
 class MessageRepository:
@@ -28,7 +28,7 @@ class MessageRepository:
             except Exception as e:
                 raise e
 
-    async def select_message_for_id(self, id: int):
+    async def select_message_by_id(self, id: int):
         if id <= 0:
             raise ValueError("Os parâmetro devem ter valores positivos")
         query = self.message_table.select().where(self.message_table.c.id == id)
@@ -40,7 +40,7 @@ class MessageRepository:
                 message = ModelAdapter(message_raw, Message).to_model()
                 return message
             except:
-                return False
+                return {}
 
     async def insert_message(self, message: Message):
         data = clean_none(message.model_dump())

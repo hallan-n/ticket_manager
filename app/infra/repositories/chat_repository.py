@@ -1,7 +1,7 @@
-from adapter.adapter import ModelAdapter
-from domain.models.chat import Chat
-from infra.config.connection import Connection
-from infra.config.schemas import chat_table
+from app.adapter.adapter import ModelAdapter
+from app.domain.models.chat import Chat
+from app.infra.config.connection import Connection
+from app.infra.config.schemas import chat_table
 
 
 class ChatRepository:
@@ -24,7 +24,7 @@ class ChatRepository:
             except:
                 return []
 
-    async def select_chat_for_id(self, id: int):
+    async def select_chat_by_id(self, id: int):
         if id <= 0:
             raise ValueError("Os parâmetro devem ter valores positivos")
         query = self.chat_table.select().where(self.chat_table.c.id == id)
@@ -36,7 +36,7 @@ class ChatRepository:
                 chat = ModelAdapter(chats_raw, Chat).to_model()
                 return chat
             except:
-                return False
+                return {}
 
     async def insert_chat(self):
         query = self.chat_table.insert()

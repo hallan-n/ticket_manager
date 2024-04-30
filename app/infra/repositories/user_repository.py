@@ -1,8 +1,8 @@
-from adapter.adapter import ModelAdapter
-from adapter.dict_utils import clean_none
-from domain.models.user import User
-from infra.config.connection import Connection
-from infra.config.schemas import user_table
+from app.adapter.adapter import ModelAdapter
+from app.adapter.dict_utils import clean_none
+from app.domain.models.user import User
+from app.infra.config.connection import Connection
+from app.infra.config.schemas import user_table
 
 
 class UserRepository:
@@ -31,10 +31,13 @@ class UserRepository:
         query = self.user_table.select().where(self.user_table.c.id == id)
 
         async with self.connection as conn:
-            result = await conn.execute(query)
-            user_raw = result.fetchone()
-            user = ModelAdapter(user_raw, User).to_model()
-            return user
+            try:
+                result = await conn.execute(query)
+                user_raw = result.fetchone()
+                user = ModelAdapter(user_raw, User).to_model()
+                return user
+            except:
+                return {}
 
     async def insert_user(self, user: User):
         data = clean_none(user.model_dump())
